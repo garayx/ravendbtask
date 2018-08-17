@@ -32,13 +32,33 @@ namespace ravendbtask
             //Console.WriteLine("write_minus_val  " + kek);
 
             t.TryWrite("kek", 155);
+            t.TryWrite("kep", 10);
             kek = t.TryRead("kek", out value);
             Console.WriteLine("read kek  " + value + "   " + kek);
+
+            kek = t.TryRead("kep", out value);
+            Console.WriteLine("read kep  " + value + "   " + kek);
+
             kek = t.Delete("kek");
             Console.WriteLine("delete kek  " + kek);
+            kek = t.TryRead("kek", out value);
+            Console.WriteLine("read kek  " + value + "   " + kek);
 
 
 
+
+            //kek = t.TryRead("kep", out value);
+            //Console.WriteLine("read kep  " + value + "   " + kek);
+            //kek = t.Delete("kek");
+            //Console.WriteLine("delete kek  " + kek);
+            //kek = t.TryRead("kep", out value);
+            //Console.WriteLine("read kep  " + value + "   " + kek);
+            //kek = t.TryRead("kek", out value);
+            //Console.WriteLine("read kek  " + value + "   " + kek);
+            //kek = t.TryRead("kek", out value);
+            //Console.WriteLine("read kek  " + value + "   " + kek);
+            //kek = t.TryRead("kep", out value);
+            //Console.WriteLine("read kep  " + value + "   " + kek);
             //kek = t.TryRead("pep", out value);
             //Console.WriteLine("pep  " + value + "   " + kek);
             //kek = t.TryRead("kek", out value);
@@ -302,17 +322,20 @@ namespace ravendbtask
             {
                 // check first char of the given key for a match in root_node children
                 int ifValue = CheckNodeChildrenForMatch(key.Substring(0, 1), TRIE_HEADER_SIZE);
-                //checkMatch(int nodeLocation, string key, int keyPosition)
+                // there no match or root_node has no children
                 if (ifValue == 0 || ifValue == -1)
                 {
                     return false;
-                }//if no match OR root got no children => do nothing
+                }// there is a match in root_children and key string first character => 
+                 // ifValue ==  key first character node location
                 else
                 {
+                    bool multiChild = false;
                     short deleteNodeLocation = 0;
-                    for (int i = 0; i < key.Length; i++)
+                    for (int i = 0; i <= key.Length; i++)
                     {
                         string keyPart = key.Substring(0, key.Length - i);
+                        // if keysubstring == ""
                         var result = checkMatch(ifValue, keyPart, 1);
                         short nodeLocation = (short)result.Item1;
                         short keyPosition = (short)result.Item2;
@@ -321,7 +344,7 @@ namespace ravendbtask
                         {
                             // check children
                             NodeInfo node = BufferToNodeInfo(nodeLocation);
-                            // the give key string is in the trie but doesnt have a value => not a valid key
+                            // the given key string is in the trie but doesnt have a value => not a valid key
                             if (node.value_location == 0 && i == 0)
                             {
                                 return false;
@@ -351,31 +374,31 @@ namespace ravendbtask
                                         StructureToBuffer(node, nodeLocation);
                                 } else
                                 {
-                                    //byte byte1, byte2;
-                                    //FromShort(node.children_location, out byte1, out byte2);
-                                    //short childrenNumber = ToShort(this.buffer[node.children_location], this.buffer[node.children_location + 1]);
-                                    //arr = ResizeChildrenArray(buffer.Skip(node.children_location).Take(getChildUsedSpaceFromBuffer(node.children_location)).ToArray(), this.trie_header.next_allocated_location, "expand");
                                     this.trie_header = BufferToTrieInfo();
                                     short childrenNumber = ToShort(this.buffer[node.children_location], this.buffer[node.children_location + 1]);
                                     if(childrenNumber > 1)
                                     {
                                         byte[] arr = ReduceChildrenArray(buffer.Skip(node.children_location).Take(getChildUsedSpaceFromBuffer(node.children_location)).ToArray(), deleteNodeLocation);
                                         arr.CopyTo(buffer, node.children_location);
-                                        this.trie_header.trie_used_space -= sizeof(short);
-                                    } else
+                                        short deleteNodeSize = SizeOfNode(deleteNodeLocation);
+                                        this.trie_header.trie_used_space = (short)(this.trie_header.trie_used_space
+                                            - sizeof(short)
+                                            - deleteNodeSize);
+                                        multiChild = true;
+                                    } else if(multiChild == false)
                                     {
-                                        
+                                        // modify current node children_location to zero => delete this node child (deleteNodeLocation)
+                                        // remove current node children size from used_space
+                                        // remove delete node size from used_space
+                                        //short nodeSize = SizeOfNode(nodeLocation);
+                                        short deleteNodeSize = SizeOfNode(deleteNodeLocation);
                                         this.trie_header.trie_used_space = (short)(this.trie_header.trie_used_space 
                                             - getChildUsedSpaceFromBuffer(node.children_location) 
-                                            - (short)(Marshal.SizeOf(node)));
+                                            - deleteNodeSize);
                                         // create nodeUsedSpace method
                                         node.children_location = 0;
                                         StructureToBuffer(node, nodeLocation);
                                     }
-                                    // update next_allocated_location
-                                    //this.trie_header.next_allocated_location = (short)(this.trie_header.next_allocated_location + arr.Length);
-                                    // update trie_used_space
-                                    //this.trie_header.trie_used_space -= sizeof(short);
 
                                     //update buffer
                                         // add children array
@@ -385,9 +408,53 @@ namespace ravendbtask
                                     deleteNodeLocation = nodeLocation;
                                 }
                             }
+                        } else if (keyPosition < keyPart.Length) // given key is bigger than value in trie
+                        {
+                            return false;
+                        } else
+                        {
+                            // given key first character node => delete from root node
+                            NodeInfo root_node = BufferToNodeInfo(TRIE_HEADER_SIZE);
+                            this.trie_header = BufferToTrieInfo();
+                            short childrenNumber = ToShort(this.buffer[root_node.children_location], this.buffer[root_node.children_location + 1]);
+                            if (childrenNumber > 1)
+                            {
+                                byte[] arr = ReduceChildrenArray(buffer.Skip(root_node.children_location).Take(getChildUsedSpaceFromBuffer(root_node.children_location)).ToArray(), deleteNodeLocation);
+                                arr.CopyTo(buffer, root_node.children_location);
+                                short deleteNodeSize = SizeOfNode(deleteNodeLocation);
+                                this.trie_header.trie_used_space = (short)(this.trie_header.trie_used_space
+                                    - sizeof(short)
+                                    - deleteNodeSize);
+
+
+                                //StructureToBuffer(this.trie_header, 0);
+                            }
+                            else if(multiChild == false)
+                            {
+                                // modify current node children_location to zero => delete this node child (deleteNodeLocation)
+                                // remove current node children size from used_space
+                                // remove delete node size from used_space
+                                //short nodeSize = SizeOfNode(nodeLocation);
+                                short deleteNodeSize = SizeOfNode(deleteNodeLocation);
+                                this.trie_header.trie_used_space = (short)(this.trie_header.trie_used_space
+                                    - getChildUsedSpaceFromBuffer(root_node.children_location)
+                                    - deleteNodeSize);
+                                // create nodeUsedSpace method
+                                root_node.children_location = 0;
+                                StructureToBuffer(root_node, TRIE_HEADER_SIZE);
+                                //StructureToBuffer(this.trie_header, 0);
+                            }
+
+                            //update buffer
+                            // add children array
+                            StructureToBuffer(this.trie_header, 0);
+
                         }
                     }
                     // trie_header_items --
+                    this.trie_header = BufferToTrieInfo();
+                    this.trie_header.trie_items_count--;
+                    StructureToBuffer(this.trie_header, 0);
                     return true;
                 }
             }
@@ -406,7 +473,26 @@ namespace ravendbtask
 
 
 
-
+        private short SizeOfNode(short nodeLocation)
+        {
+            NodeInfo node = BufferToNodeInfo(nodeLocation);
+            short alignedKeySize = 0;
+            short childrenArraySize = 0;
+            short valueSize = 0;
+            if (node.key_size != 0)
+            {
+                alignedKeySize = (short)(node.key_size - node.key_size % 8 + 8);
+            }
+            if(node.children_location != 0)
+            {
+                childrenArraySize = getChildUsedSpaceFromBuffer(node.children_location);
+            }
+            if(node.value_location != 0)
+            {
+                valueSize = sizeof(long);
+            }
+            return (short)(8 + alignedKeySize + childrenArraySize + valueSize);
+        }
 
 
         private void InsertNodesToTrie(String key, long value, int keyPosition)
@@ -555,7 +641,7 @@ namespace ravendbtask
             int j = 0;
             for (int i = 0; i < arr.Length; i++)
             {
-                if (i != k || i != k + 1)
+                if (i != k && i != k + 1)
                 {
                     temp[j] = arr[i];
                     j++;
