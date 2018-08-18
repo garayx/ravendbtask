@@ -11,5 +11,9 @@ hi|val  ke
          key|val
 ```
 
+each node got 8 byte of header, then the part of the key aligned by 8 byte, 8 bytes of value (if there is) and a children number and locations.
+```
+[node header][part of key][value if there is][children array]
+```
 The complete solution with tests class is in the rar file.
 
