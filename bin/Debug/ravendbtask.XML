@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ravendbtask</name>
+    </assembly>
+    <members>
+        <member name="T:ravendbtask.ITrie">
+            <summary>
+            The Trie interface.
+            Contains all methods that I had to create.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.ITrie.TryWrite(System.String,System.Int64)">
+            <summary>
+            Try to add the key/val to the trie
+            can fail if there isn't enough room
+            if already exists, will overwrite old 
+            value.
+            Only positive values accepted
+            </summary>
+            <returns>
+            true if write operation was succesfull
+            false if write operation failed
+            </returns>
+        </member>
+        <member name="M:ravendbtask.ITrie.TryRead(System.String,System.Int64@)">
+            <summary>
+            Try to find the key in the trie, if found,
+            will put the value in the out param.
+            Can fail if value is not there
+            </summary>
+            <returns>
+            true and a long value if read operation was succesfull
+            false and -10 if read operation failed
+            </returns>
+        </member>
+        <member name="M:ravendbtask.ITrie.Delete(System.String)">
+            <summary>
+            Remove the key from the trie, noop
+            if the key isn't there
+            </summary>
+            <returns>
+            true if delete operation was succesfull
+            false if delete operation failed
+            </returns>
+        </member>
+        <member name="M:ravendbtask.ITrie.Save(System.String)">
+            <summary>
+            Saves the internal array to a file
+            </summary>
+        </member>
+        <member name="M:ravendbtask.ITrie.Load(System.String)">
+            <summary>
+            Loads the internal array from a file
+            </summary>
+        </member>
+        <member name="T:ravendbtask.Trie">
+            <summary>
+            The main Trie class
+            Contains all methods to preform Trie operations and their help methods
+            </summary>
+            <remarks>
+            This class can add, read, delete node from trie.
+            </remarks>
+        </member>
+        <member name="T:ravendbtask.Trie.TrieInfo">
+            <summary>
+            Trie Header struct, contains infromation about the trie widely used to save and load trie information to buffer
+            </summary>
+        </member>
+        <member name="T:ravendbtask.Trie.NodeInfo">
+            <summary>
+            Trie Node struct, contains information about trie nodes.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.#ctor">
+            <summary>
+            default constructor, sets initial trie_header values and write them to buffer
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.TryWrite(System.String,System.Int64)">
+            <summary>
+            TryWrite method implementation
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.TryRead(System.String,System.Int64@)">
+            <summary>
+            TryRead method implementation
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.Delete(System.String)">
+            <summary>
+            Delete method implementation
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.Load(System.String)">
+            <summary>
+            Load method implementation
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.Save(System.String)">
+            <summary>
+            Save method implementation
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.InsertNodes(System.String,System.Int64)">
+            <summary>
+            InsertNodes method implementation,  this is a helper method of <see cref="M:ravendbtask.Trie.TryWrite(System.String,System.Int64)"/> which does all the magic!
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.TrieItemsCount">
+            <summary>
+            TrieItemsCount method implementation, returns the current number of items in trie
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.DefragBuffer">
+            <summary>
+            DefragBuffer method implementation, the method writes all trie values and nodes from the start of byte array to save space
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.DefragBufferHelpFunction(System.Byte[]@,System.Int16)">
+            <summary>
+            DefragBufferHelpFunction method implementation, this is a helper method of <see cref="M:ravendbtask.Trie.DefragBuffer"/> which takes part as recursion in <see cref="M:ravendbtask.Trie.DefragBuffer"/>, for() loop.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.SizeOfNode(System.Int16)">
+            <summary>
+            SizeOfNode method implementation, the method returns the space of the given node in buffer array.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.InsertNodesToTrie(System.String,System.Int64,System.Int32)">
+            <summary>
+            InsertNodesToTrie method implementation,  this is a helper method of <see cref="M:ravendbtask.Trie.TryWrite(System.String,System.Int64)"/> which takes parts of the given key and add them as complete nodes.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.checkMatch(System.Int32,System.String,System.Int32)">
+            <summary>
+            checkMatch method implementation,  this is a helper method of <see cref="M:ravendbtask.Trie.TryWrite(System.String,System.Int64)"/>, <see cref="M:ravendbtask.Trie.TryRead(System.String,System.Int64@)"/> and <see cref="M:ravendbtask.Trie.Delete(System.String)"/> methods, which recursively goes to the given key and returns its location in the buffer and the part of the key that it are.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.CheckNodeChildrenForMatch(System.String,System.Int32)">
+            <summary>
+            CheckNodeChildrenForMatch method implementation,  this is a helper method of <see cref="M:ravendbtask.Trie.TryWrite(System.String,System.Int64)"/>, <see cref="M:ravendbtask.Trie.TryRead(System.String,System.Int64@)"/>, <see cref="M:ravendbtask.Trie.Delete(System.String)"/> and <see cref="M:ravendbtask.Trie.checkMatch(System.Int32,System.String,System.Int32)"/> methods, which checks the given node childrens for a match between the first char of given key.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.ReduceChildrenArray(System.Byte[],System.Int16)">
+            <summary>
+            ReduceChildrenArray method implementation,  this is a helper method of <see cref="M:ravendbtask.Trie.Delete(System.String)"/> which deletes the nodeLocation of one of the deleted nodes.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.ResizeChildrenArray(System.Byte[],System.Int16,System.String)">
+            <summary>
+            ResizeChildrenArray method implementation,  this is a helper method of <see cref="M:ravendbtask.Trie.TryWrite(System.String,System.Int64)"/> which creates or expands children array in given location.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.FromShort(System.Int16,System.Byte@,System.Byte@)">
+            <summary>
+            FromShort method implementation, this is a widely used method to return byte value of short
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.ToShort(System.Byte,System.Byte)">
+            <summary>
+            ToShort method implementation, this is a widely used method to return short value of given bytes
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.StringToBuffer(System.String,System.Int32)">
+            <summary>
+            StringToBuffer method implementation, this is a widely used method to write given string to byte array at given location
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.BufferToString(System.Int32,System.Int16)">
+            <summary>
+            BufferToString method implementation, this is a method to read string from given location in buffer
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.ValueToBuffer(System.Int64,System.Int32)">
+            <summary>
+            ValueToBuffer method implementation, this is a widely used method to write nodes value to buffer
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.ShortToBuffer(System.Int16,System.Int32)">
+            <summary>
+            ShortToBuffer method implementation, this is a method to write short to buffer
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.getChildUsedSpaceFromBuffer(System.Int32)">
+            <summary>
+            getChildUsedSpaceFromBuffer method implementation, this is a helper method to calculate nodes children array used space in buffer
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.StructureToBuffer(System.Object,System.Int32,System.Byte[]@)">
+            <summary>
+            StructureToBuffer method implementation, this is a helper method to write Structs to given buffer
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.StructureToBuffer(System.Object,System.Int32)">
+            <summary>
+            StructureToBuffer method implementation, this is a helper method to write Structs to trie buffer
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.BufferToTrieInfo">
+            <summary>
+            BufferToTrieInfo() method implementation, this is a helper method to read a Trie header from buffer
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.BufferToTrieInfo(System.Byte[]@)">
+            <summary>
+            BufferToTrieInfo()  method implementation, this is a helper method to read a Trie header from a GIVEN buffer, used in <see cref="M:ravendbtask.Trie.DefragBuffer"/> function.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.BufferToNodeInfo(System.Int32)">
+            <summary>
+            BufferToNodeInfo method implementation, this is a helper method to read a node header from buffer
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.BufferToNodeInfo(System.Int32,System.Byte[]@)">
+            <summary>
+            BufferToNodeInfo method implementation, this is a helper method to read a node header from given buffer, used in <see cref="M:ravendbtask.Trie.DefragBuffer"/> function.
+            </summary>
+        </member>
+        <member name="M:ravendbtask.Trie.GetAvaibleSpace">
+            <summary>
+            GetAvaibleSpace() method implementation, this is a helper method to get free space in buffer
+            </summary>
+        </member>
+    </members>
+</doc>

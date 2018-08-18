@@ -1,6 +1,6 @@
 c:\Projects\ravendbtask\ravendbtask\bin\Debug\ravendbtask.exe.config
-c:\Projects\ravendbtask\ravendbtask\obj\Debug\ravendbtask.csprojResolveAssemblyReference.cache
 c:\Projects\ravendbtask\ravendbtask\bin\Debug\ravendbtask.exe
 c:\Projects\ravendbtask\ravendbtask\bin\Debug\ravendbtask.pdb
 c:\Projects\ravendbtask\ravendbtask\obj\Debug\ravendbtask.exe
 c:\Projects\ravendbtask\ravendbtask\obj\Debug\ravendbtask.pdb
+c:\Projects\ravendbtask\ravendbtask\bin\Debug\ravendbtask.XML

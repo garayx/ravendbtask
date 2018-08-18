@@ -262,12 +262,17 @@ namespace ravendbtaskTester
             list.Add("Zzy1kOXcOVcTs6bxKFdc");
             list.Add("2eXWyjbDxtKhze3ZReNX");
             list.Add("2eXWyjbDxtKhz2eXWyjbDxtKhe3ZReNX");
-            //list.Add("ZZSq47oSEfVSa8ZbJyQu");
-            //list.Add("zBcGVQ1O4eC0xsrhRFY2");
-            //list.Add("xDdy7VGmhvqTtvU1Gz48");
-            //list.Add("scokVQOA7M4qWluZloxy");
-            //list.Add("AfkHt4R9ltMVpxvOv9MTaeJACqsy");
-            //list.Add("B8ZYxQMBvHEiqIh9yDfN");
+            list.Add("ZZSq47oSEfVSa8ZbJyQu");
+            list.Add("zBcGVQ1O4eC0xsrhRFY2");
+            list.Add("xDdy7VGmhvqTtvU1Gz48");
+            list.Add("scokVQOA7M4qWluZloxy");
+            list.Add("AfkHt4R9ltMVpxvOv9MTaeJACqsy");
+            list.Add("B8ZYxQMBvHEiqIh9yDfN");
+            /*
+             * 
+             * more strings => returns false
+             * */
+
             //list.Add("vLP3ViKRIBPNk4JscLqS");
             //list.Add("I8ltMVpxvOClpY1MkXX9");
             //list.Add("2IsvdClxGrfVYjdxs7cq");
@@ -482,6 +487,106 @@ namespace ravendbtaskTester
             num = trie.TrieItemsCount();
             Assert.AreEqual(0, num);
         }
+
+        [TestMethod]
+        public void Can_Save_Load()
+        {
+            var trie = new Trie();
+            bool result;
+            long val;
+            short num;
+            List<String> list = new List<String>();
+            list.Add("TkZCVTFmZi35xTjAUQue");
+            list.Add("UuhB8osFNeg11sa47auI");
+            list.Add("FJrQmnwN78oeCgdE3MBK");
+            list.Add("cpqmA6lsb0QtLsMkyP6tzayegrCM");
+            list.Add("1cs9F8PX4ZC12ZZsuIAs");
+            list.Add("7jTBkuC1u6NgqvgcmUyO");
+            list.Add("u98cyz1bj0JNEAyYCs7H");
+            list.Add("yBeeYYXIZ3LRbgj5EJ2m");
+            list.Add("8JJFCp2KkCdNiWRSL6F6");
+            list.Add("u7PlMxx0");
+            list.Add("Vjlsb0QtLsTkwKGjiPFh");
+            list.Add("Jvlkr5fQ6aN5m4fy30cX");
+            list.Add("5sEtpTuUZpp6uqk7Pk5M");
+            list.Add("xuPY8fato4Z29Z9Igpdh");
+            list.Add("FditIKxWbKQLU3b7PbiB");
+            list.Add("55aQGL0zTSLeI92lH5Yd");
+            list.Add("3f1a7rN4tDreXdchY2kH");
+            list.Add("MSvZP7wkT99pHFCk9pGz");
+            list.Add("u7PlMxxhz9XRIBzQ6Co0");
+            list.Add("bRH64OD4ltMVpxvOf7AGdm2VY965");
+            list.Add("RC2MR9BTGkFV3Nxggo9K");
+            list.Add("z8l1mW");
+            list.Add("JIs1GCpjd1XnDXq1juIf");
+            list.Add("qRk92ChLdY5AIctORtS5");
+            list.Add("ArLzfXdsltMVpxvOrzm4WFVzVznc");
+            list.Add("RbH01pm7VUsfM4D94CBA");
+            list.Add("sXZscoyG3sKKEwKHyFhW");
+            list.Add("FykQ812gyStE6rUW6sK2");
+            list.Add("e5OMRwAXa3rNuS9wX2kK");
+            list.Add("JUDLptIiDFyzZt9UFjdi");
+            list.Add("3xI0UgvAVEb7f7IT3TG1");
+            list.Add("AKgfDf1XEvyvPzRbKwul");
+            list.Add("iylfElwxUkOELePBHdAS");
+            list.Add("TkZCVTFjAUQue");
+            list.Add("Hbz9WvX0KTRP40eYoXIF");
+            list.Add("tl8hyC85oYyGybHxvuG7");
+            list.Add("72SAAbag3kR9JBjX5aW4");
+            list.Add("WxNZCh191xUZ0pH8yTPg");
+            list.Add("1CyPF5OZG0wV0vPbfaIK");
+            list.Add("NOd2QHltMVpxvOnhQtjLWMXaQxS2");
+            list.Add("RRjYsCAEvW5MzERGYdLw");
+            list.Add("G9FbQb1fZfLZ2SVq7QEl");
+            list.Add("uMjQTllt5tlauPhn0KNu");
+            list.Add("Aq53hm9OlSXovEz8PvZK");
+            list.Add("Q4QtEEypqEoS7jA1PbkU");
+            list.Add("1YQmTrFHfWlrH3B0AOxY");
+            list.Add("6sZTxAMQcMtDuFbkxnZr");
+            list.Add("nc7rMXAgqhMDfSs3sP0M");
+            list.Add("XpPQUTXygn9VwTAC2djH");
+            list.Add("RV1AulmktVnqLLS9p0if");
+            list.Add("Zzy1kOXcOVcTs6bxKFdc");
+            list.Add("2eXWyjbDxtKhze3ZReNX");
+            list.Add("2eXWyjbDxtKhz2eXWyjbDxtKhe3ZReNX");
+            list.Add("ZZSq47oSEfVSa8ZbJyQu");
+            list.Add("zBcGVQ1O4eC0xsrhRFY2");
+            list.Add("xDdy7VGmhvqTtvU1Gz48");
+            list.Add("scokVQOA7M4qWluZloxy");
+            list.Add("AfkHt4R9ltMVpxvOv9MTaeJACqsy");
+            list.Add("B8ZYxQMBvHEiqIh9yDfN");
+            /*
+             * 
+             * more strings => returns false
+             * */
+            for (int i = 0; i < list.Count; i++)
+            {
+                result = trie.TryWrite(list[i], (long)(i + 1));
+                Assert.AreEqual(true, result);
+            }
+            num = trie.TrieItemsCount();
+            Assert.AreEqual(list.Count, num);
+            for (int i = 0; i < list.Count; i++)
+            {
+                result = trie.TryRead(list[i], out val);
+                Assert.AreEqual(true, result);
+                Assert.AreEqual(i + 1, val);
+            }
+            trie.Save("file");
+            trie = new Trie();
+            trie.Load("file");
+            num = trie.TrieItemsCount();
+            Assert.AreEqual(list.Count, num);
+            for (int i = 0; i < list.Count; i++)
+            {
+                result = trie.TryRead(list[i], out val);
+                Assert.AreEqual(true, result);
+                Assert.AreEqual(i + 1, val);
+            }
+        }
+        
+
+
 
 
     }
