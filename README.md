@@ -3,7 +3,7 @@ Hi, this is my first attempt to code in c#.
 
 The idea is to implement a trie via byte array.
 
-The key is stored with separate node for each part of the key:
+The key is stored with separate node for each part of the key, therefore it take a bit too much space to store a key:
 ```
    root
   h    k
